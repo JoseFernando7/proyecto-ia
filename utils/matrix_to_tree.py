@@ -1,4 +1,6 @@
-from classes import MainWindow
+from matrix_reading import *
 
-main_window = MainWindow()
-print(main_window.matriz)
+mr = MatrixReading()
+mr.read(matrix_path="../matrices/matriz.txt")
+matriz = mr.matrix
+print(matriz)

@@ -15,7 +15,7 @@ arbol2 = {
     'R': ['Q', 'W'],
     'T': ['O', 'Y'],
     'U': ['P', 'V'],
-    'V': ['Q', 'X'],
+    'V': ['Q', 'U', 'W'],
     'W': ['R', 'V', 'X'],
     'X': ['W', 'Y'],
     'Y': ['T', 'X']
@@ -49,10 +49,10 @@ def busqueda_preferente_por_amplitud(arbol, inicio, objetivo):
     cola = []
     cola.append(inicio)
     visitados = []
-    nivel = -1
+    # nivel = -1
     while len(cola) > 0:
-        nivel += 1
-        print(f'Nivel {nivel}, cola: {cola}')
+        # nivel += 1
+        # print(f'Nivel {nivel}, cola: {cola}')
         ruta_actual = cola.pop(0)
         nodo_actual = ruta_actual[-1]
         if nodo_actual not in visitados:
@@ -67,5 +67,5 @@ def busqueda_preferente_por_amplitud(arbol, inicio, objetivo):
 
 
 # Ejemplo de uso:
-camino = busqueda_preferente_por_amplitud(arbol4, 'A', 'I')
+camino = busqueda_preferente_por_amplitud(arbol2, 'F', 'T')
 print(camino)
