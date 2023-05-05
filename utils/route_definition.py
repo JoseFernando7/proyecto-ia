@@ -41,7 +41,7 @@ arbol4 = {
     'H': [],
     'I': [],
     'J': [],
-    'K': [],
+    'K': ['I'],
     'L': [],
 }
 
@@ -49,23 +49,36 @@ def busqueda_preferente_por_amplitud(arbol, inicio, objetivo):
     cola = []
     cola.append(inicio)
     visitados = []
-    # nivel = -1
     while len(cola) > 0:
-        # nivel += 1
-        # print(f'Nivel {nivel}, cola: {cola}')
         ruta_actual = cola.pop(0)
         nodo_actual = ruta_actual[-1]
         if nodo_actual not in visitados:
             visitados.append(nodo_actual)
             if nodo_actual == objetivo:
                 return ruta_actual
-            for siguiente in arbol[nodo_actual]:
+            for hijo in arbol[nodo_actual]:
                 nueva_ruta = list(ruta_actual)
-                nueva_ruta.append(siguiente)
+                nueva_ruta.append(hijo)
                 cola.append(nueva_ruta)
+    return None
+
+def busqueda_por_profundidad_iterativa(arbol, inicio, objetivo, visitados = None):
+    if visitados is None:
+        visitados = set()
+    visitados.add(inicio)
+    if inicio == objetivo:
+        return [inicio]
+    for hijo in arbol[inicio]:
+        if hijo not in visitados:
+            ruta = busqueda_por_profundidad_iterativa(arbol, hijo, objetivo, visitados)
+            if ruta is not None:
+                return [inicio] + ruta
     return None
 
 
 # Ejemplo de uso:
 camino = busqueda_preferente_por_amplitud(arbol2, 'F', 'T')
-print(camino)
+print(f'Camino: {camino}')
+
+route = busqueda_por_profundidad_iterativa(arbol2, 'F', 'T')
+print(f'Ruta: {route}')
