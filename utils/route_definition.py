@@ -1,49 +1,13 @@
-arbol2 = {
-    'A': ['B', 'F'],
-    'B': ['A', 'C'],
-    'C': ['B', 'D', 'H'],
-    'D': ['C', 'E', 'I'],
-    'E': ['D', 'J'],
-    'F': ['A', 'K'],
-    'H': ['C', 'I'],
-    'I': ['D', 'H', 'J'],
-    'J': ['E', 'I', 'O'],
-    'K': ['F', 'P'],
-    'O': ['J', 'T'],
-    'P': ['K', 'Q', 'U'],
-    'Q': ['P', 'R', 'V'],
-    'R': ['Q', 'W'],
-    'T': ['O', 'Y'],
-    'U': ['P', 'V'],
-    'V': ['Q', 'U', 'W'],
-    'W': ['R', 'V', 'X'],
-    'X': ['W', 'Y'],
-    'Y': ['T', 'X']
-}
+from matrix_to_tree import matriz_a_arbol
+from matrix_reading import *
+from matrix_route import MATRIZ_BUSQUEDA
 
-arbol3 = {
-    'F': ['A', 'K'],
-    'A': ['B', 'C'],
-    'K': ['P'],
-    'B': [],
-    'C': [],
-    'P': [],
-}
+mr = MatrixReading()
+mr.read(matrix_path=MATRIZ_BUSQUEDA)
+matriz = mr.matrix
 
-arbol4 = {
-    'A': ['B', 'C', 'D'],
-    'B': ['E'],
-    'C': ['F', 'G', 'H'],
-    'D': ['I', 'J'],
-    'E': [],
-    'F': [],
-    'G': ['K', 'L'],
-    'H': [],
-    'I': [],
-    'J': [],
-    'K': ['I'],
-    'L': [],
-}
+arbol = matriz_a_arbol(matriz)
+
 
 def busqueda_preferente_por_amplitud(arbol, inicio, objetivo):
     cola = []
@@ -62,6 +26,7 @@ def busqueda_preferente_por_amplitud(arbol, inicio, objetivo):
                 cola.append(nueva_ruta)
     return None
 
+
 def busqueda_por_profundidad_iterativa(arbol, inicio, objetivo, visitados = None):
     if visitados is None:
         visitados = set()
@@ -76,9 +41,8 @@ def busqueda_por_profundidad_iterativa(arbol, inicio, objetivo, visitados = None
     return None
 
 
-# Ejemplo de uso:
-camino = busqueda_preferente_por_amplitud(arbol2, 'F', 'T')
-print(f'Camino: {camino}')
+amplitud = busqueda_preferente_por_amplitud(arbol, 'F', 'T')
+print(f'Ruta por amplitud: {amplitud}')
 
-route = busqueda_por_profundidad_iterativa(arbol2, 'F', 'T')
-print(f'Ruta: {route}')
+profundidad = busqueda_por_profundidad_iterativa(arbol, 'F', 'T')
+print(f'Ruta por profundidad: {profundidad}')

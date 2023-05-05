@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout
 from utils.matrix_reading import *
+from utils.matrix_route import MATRIZ_INTERFAZ
 from classes.Box import Box
 
 
@@ -10,7 +11,7 @@ class MainWindow(QMainWindow):
         self.setGeometry(0, 0, 600, 600)
         self.show()
         mr = MatrixReading()
-        mr.read(matrix_path="matrices/matriz.txt")
+        mr.read(matrix_path=MATRIZ_INTERFAZ)
         self.matriz = mr.matrix
 
         # Creamos un layout en cuadrícula
