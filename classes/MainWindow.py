@@ -6,6 +6,7 @@ from utils.route_definition import busqueda_preferente_por_amplitud, busqueda_po
 from utils.matrix_to_tree import matriz_a_arbol
 from utils.cost_tree import arbol_costo
 from classes.Box import Box
+from PyQt5.QtWidgets import QLabel
 
 
 class MainWindow(QMainWindow):
@@ -18,6 +19,7 @@ class MainWindow(QMainWindow):
         self.depth_first = QPushButton("Profundidad")
         self.breadth_first = QPushButton("Amplitud")
         self.uniform_cost = QPushButton("Costo uniforme")
+        self.route_label = QLabel("Ruta: ")
 
         self.ruta = []
 
@@ -34,6 +36,7 @@ class MainWindow(QMainWindow):
         self.arbol_c = arbol_costo(self.matriz)
         self.nodo_inicio = NODO_INICIO
         self.nodo_meta = NODO_META
+        print(self.matriz, end="\n")
 
         self.create_interface()
 
@@ -72,20 +75,23 @@ class MainWindow(QMainWindow):
                     
         # Creamos el widget para el panel izquierdo
         left_panel = QWidget()
-        left_panel.setGeometry(0, 0, 600, 600)
+        #left_panel.setGeometry(0, 0, 600, 600)
         left_panel.setLayout(self.grid)
 
         # Widget para el panel derecho (opciones y botón)
         right_panel = QWidget()
-        right_panel.setGeometry(600, 0, 500, 600)
+        #right_panel.setGeometry(600, 0, 500, 600)
         right_layout = QVBoxLayout()
         right_panel.setLayout(right_layout)
+
+        self.route_label.setText("Ruta: " + str(self.ruta))
 
         # Añadimos los widgets al layout del panel derecho
         #right_layout.addWidget(options_label)
         right_layout.addWidget(self.depth_first)
         right_layout.addWidget(self.breadth_first)
         right_layout.addWidget(self.uniform_cost)
+        right_layout.addWidget(self.route_label)
 
         # Añadimos los paneles al layout principal
         self.main_layout.addWidget(left_panel)
