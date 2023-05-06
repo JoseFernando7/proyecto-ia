@@ -1,8 +1,8 @@
-from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout, QVBoxLayout, QRadioButton, QPushButton, QHBoxLayout, QSizePolicy
+from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout, QVBoxLayout, QPushButton, QHBoxLayout, QSizePolicy
 
 from utils.matrix_reading import *
 from utils.utils import MATRIZ_INTERFAZ, NODO_INICIO, NODO_META
-from utils.route_definition import busqueda_preferente_por_amplitud
+from utils.route_definition import busqueda_preferente_por_amplitud, busqueda_por_profundidad_iterativa, busqueda_costo_uniforme
 from utils.matrix_to_tree import matriz_a_arbol
 from utils.cost_tree import arbol_costo
 from classes.Box import Box
@@ -15,6 +15,12 @@ class MainWindow(QMainWindow):
         self.setGeometry(0, 0, 750, 600)
         self.show()
 
+        self.depth_first = QPushButton("Profundidad")
+        self.breadth_first = QPushButton("Amplitud")
+        self.uniform_cost = QPushButton("Costo uniforme")
+
+        self.ruta = []
+
         # Layout principal (horizontal)
         self.main_layout = QHBoxLayout()
 
@@ -26,12 +32,14 @@ class MainWindow(QMainWindow):
         self.matriz = mr.matrix
         self.arbol = matriz_a_arbol(self.matriz)
         self.arbol_c = arbol_costo(self.matriz)
+        self.nodo_inicio = NODO_INICIO
+        self.nodo_meta = NODO_META
 
         self.create_interface()
 
-        
-        # profundidad = busqueda_por_profundidad_iterativa(arbol, 'F', 'T')
-        # costo = busqueda_costo_uniforme(arbol_c, 'F', 'T')
+        self.breadth_first.clicked.connect(self.amplitud)
+        self.depth_first.clicked.connect(self.profundidad)
+        self.uniform_cost.clicked.connect(self.costo)
 
     def create_interface(self):
         for i in range(len(self.matriz)):
@@ -41,13 +49,13 @@ class MainWindow(QMainWindow):
                 porro = "assets/imgs/porro.jpg"
                 zorro = "assets/imgs/zorro.jpg"
 
-                # # Si la letra de la celda está en la ruta, la resaltamos en verde
-                # letra = chr(ord('A') + i*5 + j)
-                # if letra in ruta:
-                #     color_empty = "green"
-                #     geppeto = "assets/imgs/geppeto-verde.jpg"
-                #     porro = "assets/imgs/porro-verde.jpg"
-                #     zorro = "assets/imgs/zorro-verde.jpg"
+                # Si la letra de la celda está en la ruta, la resaltamos en verde
+                letra = chr(ord('A') + i*5 + j)
+                if letra in self.ruta:
+                    color_empty = "green"
+                    geppeto = "assets/imgs/geppeto-verde.jpg"
+                    porro = "assets/imgs/porro-verde.jpg"
+                    zorro = "assets/imgs/zorro-verde.jpg"
 
                 if self.matriz[i][j] == 1:
                     self.grid.addWidget(Box("", "assets/imgs/pinocho.jpg"), i, j)
@@ -73,16 +81,11 @@ class MainWindow(QMainWindow):
         right_layout = QVBoxLayout()
         right_panel.setLayout(right_layout)
 
-        # Opciones para el algoritmo
-        depth_first = QPushButton("Profundidad")
-        breadth_first = QPushButton("Amplitud")
-        uniform_cost = QPushButton("Costo uniforme")
-
         # Añadimos los widgets al layout del panel derecho
         #right_layout.addWidget(options_label)
-        right_layout.addWidget(depth_first)
-        right_layout.addWidget(breadth_first)
-        right_layout.addWidget(uniform_cost)
+        right_layout.addWidget(self.depth_first)
+        right_layout.addWidget(self.breadth_first)
+        right_layout.addWidget(self.uniform_cost)
 
         # Añadimos los paneles al layout principal
         self.main_layout.addWidget(left_panel)
@@ -98,7 +101,17 @@ class MainWindow(QMainWindow):
         # Asignamos el widget principal como central
         self.setCentralWidget(main_widget)
 
-    def amplitud(self, arbol, nodo_inicio, nodo_meta):
-        amplitud = busqueda_preferente_por_amplitud(arbol, nodo_inicio, nodo_meta)
+    def amplitud(self):
+        amplitud = busqueda_preferente_por_amplitud(self.arbol, self.nodo_inicio, self.nodo_meta)
+        self.ruta = amplitud
+        self.create_interface()
 
-        return amplitud
+    def profundidad(self):
+        profundidad = busqueda_por_profundidad_iterativa(self.arbol, self.nodo_inicio, self.nodo_meta)
+        self.ruta = profundidad
+        self.create_interface()
+
+    def costo(self):
+        costo = busqueda_costo_uniforme(self.arbol_c, self.nodo_inicio, self.nodo_meta)
+        self.ruta = costo
+        self.create_interface()

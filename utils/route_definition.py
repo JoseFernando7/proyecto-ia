@@ -1,16 +1,15 @@
-from matrix_to_tree import matriz_a_arbol
-from matrix_reading import *
+from utils.matrix_to_tree import matriz_a_arbol
+from utils.matrix_reading import *
 from utils.utils import MATRIZ_BUSQUEDA
-from cost_tree import arbol_costo
+from utils.cost_tree import arbol_costo
 from queue import PriorityQueue
 
 mr = MatrixReading()
 mr.read(matrix_path=MATRIZ_BUSQUEDA)
 matriz = mr.matrix
-
 arbol = matriz_a_arbol(matriz)
 arbol_c = arbol_costo(matriz)
-
+print(arbol_c)
 
 def busqueda_preferente_por_amplitud(arbol, inicio, objetivo):
     cola = []
